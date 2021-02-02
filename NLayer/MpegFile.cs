@@ -319,12 +319,17 @@ namespace NLayer
                             switch (bitDepth)
                             {
                                 case 8:
-                                    buffer[index / sizeof(float) + i] = (byte)Math.Round(127.5 * _readBuf[_readBufOfs / sizeof(float) + i] + 127.5);
+                                    buffer[index / sizeof(float) + i] = (byte)Math.Round(127.5f * _readBuf[_readBufOfs / sizeof(float) + i] + 127.5f);
                                     break;
                                 case 16:
-                                    var value = (short)Math.Round(32767.5 * _readBuf[_readBufOfs / sizeof(float) + i]);
+                                    var value = (int)Math.Round(32767.5f * _readBuf[_readBufOfs / sizeof(float) + i] - 0.5f);
+                                    if (value < 0) {
+                                        value += 65536;
+                                    }
+
                                     buffer[2 * (index / sizeof(float) + i)] = (byte)(value % 256);
                                     buffer[2 * (index / sizeof(float) + i) + 1] = (byte)(value / 256);
+
                                     break;
                             }
                         }
